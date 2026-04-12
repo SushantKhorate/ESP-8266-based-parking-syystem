@@ -125,43 +125,40 @@
   </style>
 
   <script>
-    // TEMP DATA (replace with /data later)
-    let data = {
-      P1: 1, P2: 1, P3: 1, P4: 1,
-      P5: 1, P6: 1, P7: 1, P8: 1,
-      P9: 1, P10: 1, P11: 1, P12: 1
-    };
 
-    function update() {
+    
+function update() {
+  fetch('/data')
+  .then(res => res.json())
+  .then(data => {
 
-      // simulate only real sensors
-      data.P1 = Math.round(Math.random());
-      data.P6 = Math.round(Math.random());
-      data.P10 = Math.round(Math.random());
+    let occupied = 0;
 
-      let occupied = 0;
+    for (let key in data) {
+      let el = document.getElementById(key);
+      if (!el) continue;
 
-      for (let key in data) {
-        let el = document.getElementById(key);
-
-        if (data[key] == 1) {
-          el.style.background = "green";
-        } else {
-          el.style.background = "red";
-          occupied++;
-        }
-
-        el.innerHTML = key + "<br>🚗";
-
-        // NO BORDER (clean)
-        el.style.border = "none";
+      if (data[key] == 1) {
+        el.style.background = "green";
+      } else {
+        el.style.background = "red";
+        occupied++;
       }
 
-      document.getElementById("summary").innerHTML =
-        "Available: " + (12 - occupied) + " / 12";
+      el.innerHTML = key + "<br>🚗";
+      el.style.border = "none";
     }
 
-    setInterval(update, 1000);
+    document.getElementById("summary").innerHTML =
+      "Available: " + (12 - occupied) + " / 12";
+  })
+  .catch(err => console.log("Fetch error:", err));
+}
+
+// update every 1 second
+setInterval(update, 1000);
+
+    
   </script>
 
 </head>
