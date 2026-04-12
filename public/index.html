@@ -1,132 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Mahalakshmi Temple Parking</title>
+<script>
+function update(){
+  fetch('/data')
+  .then(r => r.json())
+  .then(d => {
 
-  <style>
-    body {
-      font-family: Arial;
-      text-align: center;
-      background: #f5f5f5;
-    }
+    for (let key in d) {
+      let el = document.getElementById(key);
 
-    h1 {
-      margin: 10px;
-    }
-
-    .layout {
-      width: 400px;
-      height: 400px;
-      margin: auto;
-      position: relative;
-      border: 2px solid black;
-      background: white;
-    }
-
-    .temple {
-      position: absolute;
-      top: 140px;
-      left: 140px;
-      width: 120px;
-      height: 120px;
-      background: #ddd;
-      line-height: 120px;
-      font-weight: bold;
-    }
-
-    .slot {
-      width: 50px;
-      height: 30px;
-      margin: 2px;
-      display: inline-block;
-      color: white;
-      font-size: 10px;
-      line-height: 30px;
-    }
-
-    .row {
-      position: absolute;
-    }
-
-    .top { top: 10px; left: 80px; }
-    .bottom { bottom: 10px; left: 80px; }
-    .left { top: 80px; left: 10px; }
-    .right { top: 80px; right: 10px; }
-
-    .info {
-      margin-top: 15px;
-      font-size: 14px;
-    }
-  </style>
-
-  <script>
-    function update() {
-      fetch('/data')
-      .then(r => r.json())
-      .then(d => {
-
-        updateGroup("bus", d.bus);
-        updateGroup("mini", d.mini);
-        updateGroup("car", d.car);
-
-      });
-    }
-
-    function updateGroup(prefix, vacant) {
-      for (let i = 1; i <= 4; i++) {
-        let el = document.getElementById(prefix + i);
-
-        if (i <= vacant) {
-          el.style.background = "green";
-        } else {
-          el.style.background = "red";
-        }
+      if (d[key] == 1) {
+        el.style.background = "green";
+        el.innerHTML = key + "<br>Empty";
+      } else {
+        el.style.background = "red";
+        el.innerHTML = key + "<br>Occupied";
       }
     }
 
-    setInterval(update, 1000);
-  </script>
-</head>
+  });
+}
 
-<body onload="update()">
-
-<h1>MAHALAKSHMI TEMPLE PARKING</h1>
-
-<div class="layout">
-
-  <div class="temple">TEMPLE</div>
-
-  <!-- TOP (BUS) -->
-  <div class="row top">
-    <div id="bus1" class="slot">B1</div>
-    <div id="bus2" class="slot">B2</div>
-    <div id="bus3" class="slot">B3</div>
-    <div id="bus4" class="slot">B4</div>
-  </div>
-
-  <!-- BOTTOM (CAR) -->
-  <div class="row bottom">
-    <div id="car1" class="slot">C1</div>
-    <div id="car2" class="slot">C2</div>
-    <div id="car3" class="slot">C3</div>
-    <div id="car4" class="slot">C4</div>
-  </div>
-
-  <!-- LEFT (MINI BUS) -->
-  <div class="row left">
-    <div id="mini1" class="slot">M1</div>
-    <div id="mini2" class="slot">M2</div>
-    <div id="mini3" class="slot">M3</div>
-    <div id="mini4" class="slot">M4</div>
-  </div>
-
-</div>
-
-<div class="info">
-  <p>BUS: 4 TOTAL - dynamic vacant</p>
-  <p>MINI BUS: 4 TOTAL - dynamic vacant</p>
-  <p>CAR: 4 TOTAL - dynamic vacant</p>
-</div>
-
-</body>
-</html>
+setInterval(update, 1000);
+</script>
