@@ -7,76 +7,163 @@
     body {
       font-family: Arial;
       text-align: center;
-      background: #f5f5f5;
+      background: #f0f0f0;
     }
 
-    h1 {
-      margin: 10px;
-    }
+    h1 { margin: 10px; }
 
     .layout {
-      width: 400px;
-      height: 400px;
+      width: 500px;
+      height: 500px;
       margin: auto;
       position: relative;
+      background: #dcdcdc;
       border: 2px solid black;
-      background: white;
     }
 
+    /* TEMPLE */
     .temple {
       position: absolute;
-      top: 140px;
-      left: 140px;
-      width: 120px;
-      height: 120px;
-      background: #ddd;
-      line-height: 120px;
+      top: 180px;
+      left: 210px;
+      width: 140px;
+      height: 140px;
+      background: #bbb;
+      line-height: 140px;
       font-weight: bold;
     }
 
-    .slot {
-      width: 50px;
-      height: 30px;
-      margin: 2px;
-      display: inline-block;
-      color: white;
-      font-size: 10px;
-      line-height: 30px;
-    }
-
-    .row {
+    /* ROADS */
+    .road {
       position: absolute;
+      background: #777;
     }
 
-    .top { top: 10px; left: 80px; }
-    .bottom { bottom: 10px; left: 80px; }
-    .left { top: 80px; left: 10px; }
+    .road.top {
+      top: 60px;
+      left: 100px;
+      width: 340px;
+      height: 40px;
+    }
+
+    .road.left {
+      top: 60px;
+      left: 100px;
+      width: 40px;
+      height: 340px;
+    }
+
+    .road.bottom {
+      bottom: 60px;
+      left: 100px;
+      width: 340px;
+      height: 40px;
+    }
+
+    /* ENTRY / EXIT (AS YOU SPECIFIED) */
+    .exit {
+      position: absolute;
+      top: 75px;
+      right: 25px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .entry {
+      position: absolute;
+      bottom: 75px;
+      right: 12px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    /* FLOW ARROWS */
+    .arrow {
+      position: absolute;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    /* SLOT STYLE */
+    .slot {
+      width: 60px;
+      height: 30px;
+      color: white;
+      font-size: 11px;
+      text-align: center;
+      line-height: 15px;
+      padding-top: 3px;
+      position: absolute;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    /* TOP */
+    #P9 { top: 20px; left: 120px; }
+    #P10 { top: 20px; left: 190px; }
+    #P11 { top: 20px; left: 260px; }
+    #P12 { top: 20px; left: 330px; }
+
+    /* LEFT (ALIGNED DOWN) */
+    #P5 { top: 150px; left: 30px; }
+    #P6 { top: 200px; left: 30px; }
+    #P7 { top: 250px; left: 30px; }
+    #P8 { top: 300px; left: 30px; }
+
+    /* BOTTOM */
+    #P4 { bottom: 15px; left: 110px; }
+    #P3 { bottom: 15px; left: 180px; }
+    #P2 { bottom: 15px; left: 250px; }
+    #P1 { bottom: 15px; left: 320px; }
+
+    #summary {
+      margin-top: 15px;
+      font-weight: bold;
+    }
 
   </style>
 
   <script>
-    function update(){
-      fetch('/data')
-      .then(r => r.json())
-      .then(d => {
+    // TEMP DATA (replace with /data later)
+    let data = {
+      P1: 1, P2: 1, P3: 1, P4: 1,
+      P5: 1, P6: 1, P7: 1, P8: 1,
+      P9: 1, P10: 1, P11: 1, P12: 1
+    };
 
-        for (let key in d) {
-          let el = document.getElementById(key);
+    function update() {
 
-          if (d[key] == 1) {
-            el.style.background = "green";
-            el.innerHTML = key + "<br>Empty";
-          } else {
-            el.style.background = "red";
-            el.innerHTML = key + "<br>Occupied";
-          }
+      // simulate only real sensors
+      data.P1 = Math.round(Math.random());
+      data.P6 = Math.round(Math.random());
+      data.P10 = Math.round(Math.random());
+
+      let occupied = 0;
+
+      for (let key in data) {
+        let el = document.getElementById(key);
+
+        if (data[key] == 1) {
+          el.style.background = "green";
+        } else {
+          el.style.background = "red";
+          occupied++;
         }
 
-      });
+        el.innerHTML = key + "<br>🚗";
+
+        // NO BORDER (clean)
+        el.style.border = "none";
+      }
+
+      document.getElementById("summary").innerHTML =
+        "Available: " + (12 - occupied) + " / 12";
     }
 
     setInterval(update, 1000);
   </script>
+
 </head>
 
 <body onload="update()">
@@ -85,33 +172,42 @@
 
 <div class="layout">
 
+  <!-- ROADS -->
+  <div class="road top"></div>
+  <div class="road left"></div>
+  <div class="road bottom"></div>
+
+  <!-- FLOW -->
+  <div class="arrow" style="top:70px; left:220px;">→</div>
+  <div class="arrow" style="top:200px; left:110px;">↑</div>
+  <div class="arrow" style="bottom:70px; left:220px;">←</div>
+
+  <!-- ENTRY / EXIT -->
+  <div class="exit">EXIT</div>
+  <div class="entry">ENTRY</div>
+
+  <!-- TEMPLE -->
   <div class="temple">TEMPLE</div>
 
-  <!-- TOP -->
-  <div class="row top">
-    <div id="P9" class="slot">P9</div>
-    <div id="P10" class="slot">P10</div>
-    <div id="P11" class="slot">P11</div>
-    <div id="P12" class="slot">P12</div>
-  </div>
+  <!-- SLOTS -->
+  <div id="P9" class="slot"></div>
+  <div id="P10" class="slot"></div>
+  <div id="P11" class="slot"></div>
+  <div id="P12" class="slot"></div>
 
-  <!-- LEFT -->
-  <div class="row left">
-    <div id="P5" class="slot">P5</div>
-    <div id="P6" class="slot">P6</div>
-    <div id="P7" class="slot">P7</div>
-    <div id="P8" class="slot">P8</div>
-  </div>
+  <div id="P5" class="slot"></div>
+  <div id="P6" class="slot"></div>
+  <div id="P7" class="slot"></div>
+  <div id="P8" class="slot"></div>
 
-  <!-- BOTTOM -->
-  <div class="row bottom">
-    <div id="P4" class="slot">P4</div>
-    <div id="P3" class="slot">P3</div>
-    <div id="P2" class="slot">P2</div>
-    <div id="P1" class="slot">P1</div>
-  </div>
+  <div id="P4" class="slot"></div>
+  <div id="P3" class="slot"></div>
+  <div id="P2" class="slot"></div>
+  <div id="P1" class="slot"></div>
 
 </div>
+
+<div id="summary"></div>
 
 </body>
 </html>
