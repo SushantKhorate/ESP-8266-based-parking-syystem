@@ -4,16 +4,18 @@ const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 
+// Real sensor values
 let sensors = { s1: 1, s2: 1, s3: 1 };
 
+// ESP will send updates here
 app.post("/update", (req, res) => {
   sensors = req.body;
   res.send("OK");
 });
 
+// Frontend fetches this
 app.get("/data", (req, res) => {
 
-  // Create 12 slots (default = empty)
   let slots = {
     P1: 1, P2: 1, P3: 1, P4: 1,
     P5: 1, P6: 1, P7: 1, P8: 1,
