@@ -1,210 +1,253 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Mahalakshmi Temple Parking</title>
+<title>Mahalakshmi Temple Parking</title>
 
-  <style>
-    body {
-      font-family: Arial;
-      text-align: center;
-      background: #f0f0f0;
-    }
-
-    h1 { margin: 10px; }
-
-    .layout {
-      width: 500px;
-      height: 500px;
-      margin: auto;
-      position: relative;
-      background: #dcdcdc;
-      border: 2px solid black;
-    }
-
-    /* TEMPLE */
-    .temple {
-      position: absolute;
-      top: 180px;
-      left: 210px;
-      width: 140px;
-      height: 140px;
-      background: #bbb;
-      line-height: 140px;
-      font-weight: bold;
-    }
-
-    /* ROADS */
-    .road {
-      position: absolute;
-      background: #777;
-    }
-
-    .road.top {
-      top: 60px;
-      left: 100px;
-      width: 340px;
-      height: 40px;
-    }
-
-    .road.left {
-      top: 60px;
-      left: 100px;
-      width: 40px;
-      height: 340px;
-    }
-
-    .road.bottom {
-      bottom: 60px;
-      left: 100px;
-      width: 340px;
-      height: 40px;
-    }
-
-    /* ENTRY / EXIT (AS YOU SPECIFIED) */
-    .exit {
-      position: absolute;
-      top: 75px;
-      right: 25px;
-      font-size: 12px;
-      font-weight: bold;
-    }
-
-    .entry {
-      position: absolute;
-      bottom: 75px;
-      right: 12px;
-      font-size: 12px;
-      font-weight: bold;
-    }
-
-    /* FLOW ARROWS */
-    .arrow {
-      position: absolute;
-      color: white;
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    /* SLOT STYLE */
-    .slot {
-      width: 60px;
-      height: 30px;
-      color: white;
-      font-size: 11px;
-      text-align: center;
-      line-height: 15px;
-      padding-top: 3px;
-      position: absolute;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-
-    /* TOP */
-    #P9 { top: 20px; left: 120px; }
-    #P10 { top: 20px; left: 190px; }
-    #P11 { top: 20px; left: 260px; }
-    #P12 { top: 20px; left: 330px; }
-
-    /* LEFT (ALIGNED DOWN) */
-    #P5 { top: 150px; left: 30px; }
-    #P6 { top: 200px; left: 30px; }
-    #P7 { top: 250px; left: 30px; }
-    #P8 { top: 300px; left: 30px; }
-
-    /* BOTTOM */
-    #P4 { bottom: 15px; left: 110px; }
-    #P3 { bottom: 15px; left: 180px; }
-    #P2 { bottom: 15px; left: 250px; }
-    #P1 { bottom: 15px; left: 320px; }
-
-    #summary {
-      margin-top: 15px;
-      font-weight: bold;
-    }
-
-  </style>
-
-  <script>
-
-    
-function update() {
-  fetch('/data')
-  .then(res => res.json())
-  .then(data => {
-
-    let occupied = 0;
-
-    for (let key in data) {
-      let el = document.getElementById(key);
-      if (!el) continue;
-
-      if (data[key] == 1) {
-        el.style.background = "green";
-      } else {
-        el.style.background = "red";
-        occupied++;
-      }
-
-      el.innerHTML = key + "<br>🚗";
-      el.style.border = "none";
-    }
-
-    document.getElementById("summary").innerHTML =
-      "Available: " + (12 - occupied) + " / 12";
-  })
-  .catch(err => console.log("Fetch error:", err));
+<style>
+body {
+    font-family: Arial;
+    text-align: center;
+    background: #f5f5f5;
 }
 
-// update every 1 second
-setInterval(update, 1000);
+.container {
+    width: 800px;
+    margin: auto;
+    background: #c8e6c9;
+    border: 4px solid #333;
+    padding: 20px;
+}
 
+/* TOP */
+.top {
+    display: flex;
+    justify-content: flex-start;
+    gap: 60px;
+    align-items: flex-end;
+}
+
+.bus-group {
+    display: flex;
+    justify-content: space-around;
+    width: 260px; /* controls spacing width */
+}
+
+/* TEMPLE */
+.temple {
+    font-size: 30px;
+    width: 260px;
+    height: 300px;
+    border: 3px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    background: white;
+}
+
+
+/* ROAD */
+.road {
+    height: 70px;
+    background: #444;
+    margin: 50px 0;
+}
+
+/* LOWER */
+.row {
+    display: flex;
+    justify-content: space-around;
+}
+
+.contact {
+    margin-top: 30px;
+    font-size: 18px;
     
-  </script>
+}
+/* SLOT */
+.spot {
+    width: 80px;
+    height: 140px;
+    border: 2px solid black;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background: #4CAF50;
+    color: white;
+    padding: 8px 0;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+/* OCCUPIED */
+.occupied {
+    background: #f44336;
+}
+
+/* TEXT */
+.slot-id { font-size: 16px; }
+.vehicle { font-size: 36px; }
+.type { font-size: 14px; }
+
+/* SUMMARY */
+.summary {
+    margin-top: 30px;
+    font-size: 20px;
+    font-weight: bold;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;     /* center block */
+}
+
+/* align text like a list */
+.summary div {
+    width: 200px;
+    text-align: left;        /* THIS makes straight line */
+}
+</style>
+
+<script>
+function update(){
+
+fetch('/data')
+.then(r => r.json())
+.then(d => {
+
+let car=0, mini=0, bus=0;
+
+const slots = ["P1","P2","P3","P4","P5","P6","P7","P8"];
+
+slots.forEach(k=>{
+ let el = document.getElementById(k);
+
+ // FORCE VALUE (default = 1)
+ let v = (k in d) ? d[k] : 1;
+
+ el.classList.toggle("occupied", v == 0);
+
+ if(["P1","P2","P3"].includes(k)){
+   if(v) car++;
+ }
+ else if(["P4","P5","P6"].includes(k)){
+   if(v) mini++;
+ }
+ else{
+   if(v) bus++;
+ }
+});
+
+// ALWAYS UPDATE TEXT (even if 0)
+document.getElementById("car").innerText = "Car: " + car + " / 3";
+document.getElementById("mini").innerText = "Mini Bus: " + mini + " / 3";
+document.getElementById("bus").innerText = "Bus: " + bus + " / 2";
+
+})
+.catch(err => {
+ console.log("DATA ERROR:", err);
+
+ // fallback display
+ document.getElementById("car").innerText = "Car: 0 / 3";
+ document.getElementById("mini").innerText = "Mini Bus: 0 / 3";
+ document.getElementById("bus").innerText = "Bus: 0 / 2";
+});
+}
+
+setInterval(update,1000);
+window.onload = update;
+</script>
 
 </head>
 
-<body onload="update()">
+<body>
 
-<h1>MAHALAKSHMI TEMPLE PARKING</h1>
+<h1>Mahalakshmi Temple Parking</h1>
 
-<div class="layout">
+<div class="container">
 
-  <!-- ROADS -->
-  <div class="road top"></div>
-  <div class="road left"></div>
-  <div class="road bottom"></div>
+  <!-- TOP -->
+  <div class="top">
 
-  <!-- FLOW -->
-  <div class="arrow" style="top:70px; left:220px;">→</div>
-  <div class="arrow" style="top:200px; left:110px;">↑</div>
-  <div class="arrow" style="bottom:70px; left:220px;">←</div>
+    <!-- BUS -->
+    <div class="bus-group">
+      <div id="P8" class="spot">
+        <div class="slot-id">P8</div>
+        <div class="vehicle">🚌</div>
+        <div class="type">BUS</div>
+      </div>
 
-  <!-- ENTRY / EXIT -->
-  <div class="exit">EXIT</div>
-  <div class="entry">ENTRY</div>
+      <div id="P7" class="spot">
+        <div class="slot-id">P7</div>
+        <div class="vehicle">🚌</div>
+        <div class="type">BUS</div>
+      </div>
+    </div>
 
-  <!-- TEMPLE -->
-  <div class="temple">TEMPLE</div>
+    <!-- TEMPLE -->
+    <div class="temple">TEMPLE</div>
 
-  <!-- SLOTS -->
-  <div id="P9" class="slot"></div>
-  <div id="P10" class="slot"></div>
-  <div id="P11" class="slot"></div>
-  <div id="P12" class="slot"></div>
+  </div>
 
-  <div id="P5" class="slot"></div>
-  <div id="P6" class="slot"></div>
-  <div id="P7" class="slot"></div>
-  <div id="P8" class="slot"></div>
+  <!-- ROAD -->
+  <div class="road"></div>
 
-  <div id="P4" class="slot"></div>
-  <div id="P3" class="slot"></div>
-  <div id="P2" class="slot"></div>
-  <div id="P1" class="slot"></div>
+  <!-- LOWER -->
+  <div class="row">
+
+    <div id="P6" class="spot">
+      <div class="slot-id">P6</div>
+      <div class="vehicle">🚐</div>
+      <div class="type">MINI BUS</div>
+    </div>
+
+    <div id="P5" class="spot">
+      <div class="slot-id">P5</div>
+      <div class="vehicle">🚐</div>
+      <div class="type">MINI BUS</div>
+    </div>
+
+    <div id="P4" class="spot">
+      <div class="slot-id">P4</div>
+      <div class="vehicle">🚐</div>
+      <div class="type">MINI BUS</div>
+    </div>
+
+    <div id="P3" class="spot">
+      <div class="slot-id">P3</div>
+      <div class="vehicle">🚗</div>
+      <div class="type">CAR</div>
+    </div>
+
+    <div id="P2" class="spot">
+      <div class="slot-id">P2</div>
+      <div class="vehicle">🚗</div>
+      <div class="type">CAR</div>
+    </div>
+
+    <div id="P1" class="spot">
+      <div class="slot-id">P1</div>
+      <div class="vehicle">🚗</div>
+      <div class="type">CAR</div>
+    </div>
+
+  </div>
 
 </div>
 
-<div id="summary"></div>
+<!-- SUMMARY -->
+<div class="summary">
+  <div id="car"></div>
+  <div id="mini"></div>
+  <div id="bus"></div>
+</div>
+
+<!-- CONTACT -->
+<div class="contact">
+  Contact: 98XXXXXXXX<br>
+Email: abc@gmail.com
+</div>
 
 </body>
 </html>
